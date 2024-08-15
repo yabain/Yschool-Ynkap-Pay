@@ -1,0 +1,2 @@
+- Ajouter le vérification pour s'assurer que le montant vérifier n'est pas en dessous du montant
+actuelle dans le compte: https://dev.to/avantar/injecting-request-object-to-a-custom-validation-class-in-nestjs-5dal
