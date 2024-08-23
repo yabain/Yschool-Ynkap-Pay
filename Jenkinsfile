@@ -21,6 +21,7 @@ pipeline {
       steps {
         sh 'docker push yabain/asdesmots-backend'
       }
+      
     }
   }
   post {
