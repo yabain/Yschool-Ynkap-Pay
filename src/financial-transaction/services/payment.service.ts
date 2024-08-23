@@ -40,7 +40,6 @@ export class PaymentService
         catch(err)
         {
             await transaction.abortTransaction();
-            console.log("Error ",err.response)
             throw err
         }
         finally

@@ -83,7 +83,14 @@ export class OrangeMoneyStrategyPayment implements PaymentMethodStrategy
                         console.log("data ",data)
                         resolve({ error:FinancialTransactionErrorType.NO_ERROR,token:mPayToken })
                     },
-                    (error)=>{reject(error)}
+                    (error)=>{
+                        // console.log("Response Data",error.response.data)
+                        if(error.response.data && error.response.data.data.status=="FAILED")
+                        {
+                            return resolve({error:FinancialTransactionErrorType.INSUFFICIENT_AMOUNT_ERROR})
+                        }
+                        reject(error)
+                    }
                 )
             })
             .catch((error)=>  reject(error))

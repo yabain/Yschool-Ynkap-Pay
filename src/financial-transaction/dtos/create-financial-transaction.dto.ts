@@ -13,7 +13,7 @@ export class CreateFinancialTransactionDTO
 {
 
     @Min(1)
-    @IsNumber()
+    @IsNumber({},{message:"Montant de la transaction invalide"})
     // @IsValidAmount()
     amount:number;
 
@@ -23,22 +23,22 @@ export class CreateFinancialTransactionDTO
     
    
     @IsNotEmpty()
-    @IsEnum(PaymentStrategyType)
+    @IsEnum(PaymentStrategyType,{message:"Mode de paiement non supporté"})
     paymentMode:PaymentStrategyType;
 
     @IsOptional()
     @IsEnum(FinancialTransactionState)
     state:FinancialTransactionState;
 
-    @IsEnum(PaymentMoneyCode)
+    @IsEnum(PaymentMoneyCode,{message:"Monai non pris en charge"})
     moneyCode:PaymentMoneyCode;
 
     @IsDefined()
-    @IsNotEmptyObject()
+    @IsNotEmptyObject({}, {message:"Information sur l'utilisateur invalide"})
     @Type(()=> UserRefDTO)
     userRef;
 
-    @IsString()
+    @IsString({message:"Raison du transfert non fournis"})
     raison:string
 
     //Invalidate

@@ -35,7 +35,7 @@ export class PaymentController
 
     // @UseGuards(AppAuthJwtGuard)
     @Get("check/:ref")    
-    async checkPayment(@Req() request:Request, @Param("ref",new ParseUUIDPipe({version:"4"})) ref:string)
+    async checkPayment(@Req() request:Request, @Param("ref") ref:string)
     {
         let data=await this.paymentService.checkPayment(ref)
         return {
