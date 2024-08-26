@@ -7,8 +7,7 @@
 .idea/**/workspace.xml
 .idea/**/tasks.xml
 .idea/dictionaries
-.env.dev
-.env.prod
+
 
 # Sensitive or high-churn files:
 .idea/**/dataSources/
@@ -397,6 +396,8 @@ Temporary Items
 =======
 # Local
 .env
+.env.dev
+.env.prod
 dist
 
 # Elastic Beanstalk Files

@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('Build') {
       steps {
-        sh 'docker build -t yabain/asdesmots-backend .'
+        sh 'docker build -t yabain/yschool-apipayment-backend .'
       }
     }
     stage('Login') {
@@ -19,7 +19,7 @@ pipeline {
     }
     stage('Push') {
       steps {
-        sh 'docker push yabain/asdesmots-backend'
+        sh 'docker push yabain/yschool-apipayment-backend'
       }
       
     }
