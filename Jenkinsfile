@@ -21,7 +21,6 @@ pipeline {
       steps {
         sh 'docker push yabain/yschool-apipayment-backend'
       }
-      
     }
   }
   post {
