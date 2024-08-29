@@ -66,7 +66,7 @@ export class OrangeMoneyStrategyPayment implements PaymentMethodStrategy
                                     "X-AUTH-TOKEN": this.configService.get("OM_API_X_AUTH_TOKEN"),
                                 },
                                 data:{
-                                    "notifUrl":`${this.configService.get("HOST_URL")}/orange-money-notify-payment`,
+                                    "notifUrl":`${this.configService.get("HOST_URL")}/payment/orange-money-notify-payment`,
                                     "channelUserMsisdn":this.configService.get("OM_API_CHANNELUSERMSISDN"),
                                     "amount": `${financialTransaction.amount}`,
                                     "subscriberMsisdn":financialTransaction.userRef.account,
