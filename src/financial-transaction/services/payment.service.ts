@@ -40,7 +40,9 @@ export class PaymentService
         catch(err)
         {
             await transaction.abortTransaction();
-            throw err
+            // throw err
+            console.log("Error Payement Pay",err)
+
         }
         finally
         {
@@ -74,6 +76,8 @@ export class PaymentService
         catch(err)
         {
             await transaction.abortTransaction();
+            console.log("Error Payement Check Status",err)
+
             // throw err
         }
         finally
@@ -110,6 +114,7 @@ export class PaymentService
         catch(err)
         {
             await transaction.abortTransaction();
+            console.log("Error Payement Update Status",err)
         }
         finally
         {
