@@ -58,6 +58,7 @@ export class PaymentService
         transaction.startTransaction();
         try {
             financialTransaction=await this.financialTransactionService.findOneByField({ref:financialTransactionRef})
+            console.log("financialTransaction", financialTransaction)
             if(!financialTransaction) throw new NotFoundException({
                 statusCode:HttpStatus.NOT_FOUND,
                 message:`Transaction id ${financialTransactionRef} not found`
@@ -77,10 +78,15 @@ export class PaymentService
         catch(err)
         {
             await transaction.abortTransaction();
-            console.log("Error Payement Check Status",err)
-            switch(err)
+
+            let error = err.response?.statusCode | err;
+            
+            console.log("Error Payement Check Status",err,error)
+            
+            switch(error)
             {
                 case ERROR_CODE.RESSOURCE_NOT_FOUND_ERROR:
+                case HttpStatus.NOT_FOUND:
                     throw new NotFoundException({
                         statusCode:HttpStatus.NOT_FOUND,
                         message:`Transaction id ${financialTransactionRef} not found`
@@ -90,7 +96,6 @@ export class PaymentService
                     return financialTransaction;
 
             }
-            // throw err
         }
         finally
         {
