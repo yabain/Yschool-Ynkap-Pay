@@ -74,7 +74,7 @@ export class PaymentService
         catch(err)
         {
             await transaction.abortTransaction();
-            throw err
+            // throw err
         }
         finally
         {

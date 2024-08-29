@@ -1,6 +1,6 @@
 import { HttpService } from "@nestjs/axios";
 import { ConfigService } from "@nestjs/config";
-import { from, map, switchMap } from "rxjs";
+import { catchError, from, map, switchMap, tap } from "rxjs";
 import { PaymentMethodStrategy } from "src/financial-payment/interfaces";
 import { FinancialTransactionState, FinancialTransactionErrorType } from "src/financial-transaction/enum";
 import { FinancialTransaction } from "src/financial-transaction/models";
@@ -111,36 +111,32 @@ export class OrangeMoneyStrategyPayment implements PaymentMethodStrategy
             .then((result)=>{
                 token = result;
                 
-                this.httpService.request({
+                return this.httpService.axiosRef.request({
                     url:`${this.configService.get<string>("OM_API_PATH")}/omcoreapis/1.0.2/mp/paymentstatus/${financialTransaction.ref}`,
                     method:"get",
                     headers:{
                         Authorization: `Bearer ${token}`,
                         "X-AUTH-TOKEN": this.configService.get("OM_API_X_AUTH_TOKEN"),
-                }})
-                .subscribe(
-                    (response)=>{
-                        resolve({...UtilStrategyFunc.getResponseStatus(response.data) })
-                    },
-                    (error)=>{
-                        let resultCode = null;
-                        switch(error.status)
-                        {
-                            case 400:
-                                return resolve({...UtilStrategyFunc.getResponseStatus(error.data)});
-                            case 404:
-                                resultCode=ERROR_CODE.RESSOURCE_NOT_FOUND_ERROR;
-                                break;
-                            default:
-                                resultCode=ERROR_CODE.UNKNOW_ERROR;
-                        }
-                        console.log(error)
-                        reject(resultCode)
+                }})})
+            .then((response)=>{
+                resolve({...UtilStrategyFunc.getResponseStatus(response.data) })
+            }).catch( (error)=>
+                {
+                    // console.log("Error found ",error.response,error.response.status)
+                    let resultCode = null;
+                    switch(error.status)
+                    {
+                        case 400:
+                            return resolve({...UtilStrategyFunc.getResponseStatus(error.data)});
+                        case 404:
+                            resultCode=ERROR_CODE.RESSOURCE_NOT_FOUND_ERROR;
+                            break;
+                        default:
+                            resultCode=ERROR_CODE.UNKNOW_ERROR;
                     }
-                )
-            
-            })
-            .catch((error)=>  reject(error))
+                    reject(resultCode)
+                }
+            )
         }) 
     }
     withdrawal(financialTransaction: FinancialTransaction) {

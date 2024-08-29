@@ -3,7 +3,7 @@ version: 0.2
 phases:
   build:
     commands:
-      - npm ci && npm run build-dev
+      - npm ci && npm run build-prod
 artifacts:
   files:
     - '**/*'

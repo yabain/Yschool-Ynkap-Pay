@@ -1,11 +1,13 @@
-import { ValidationPipe } from '@nestjs/common';
+import { InternalServerErrorException, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { useContainer } from 'class-validator';
 import { AppModule } from './app.module';
 import { MongoExceptionFilter } from './shared/exceptions';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { HttpService } from '@nestjs/axios';
 
 async function bootstrap() {
+  const httpService = new HttpService();
   const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(new ValidationPipe({
@@ -16,6 +18,19 @@ async function bootstrap() {
 
   app.enableCors();
   app.useGlobalFilters(new MongoExceptionFilter())
+  // app.useGlobalFilters(new HttpExceptionFilter());
+  // httpService.axiosRef.interceptors.response.use(
+  //   (response) => {
+  //     return response;
+  //   },
+  //   (error) => {
+  //     // console.error('Internal server error exception', error);
+  //     // return null;
+  //     return error;
+  //     // throw new InternalServerErrorException();
+  //   },
+  // );
+
   useContainer(app.select(AppModule),{fallbackOnErrors:true});
   
   const config = new DocumentBuilder()
