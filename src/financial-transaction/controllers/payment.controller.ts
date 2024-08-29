@@ -37,6 +37,7 @@ export class PaymentController
     @Get("check/:ref")    
     async checkPayment(@Req() request:Request, @Param("ref") ref:string)
     {
+        console.log("Ref ",ref)
         let data=await this.paymentService.checkPayment(ref)
         return {
             statusCode:HttpStatus.OK,

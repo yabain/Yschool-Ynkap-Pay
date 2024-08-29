@@ -11,6 +11,7 @@ import { ConfigService } from "@nestjs/config";
 import { StrategyResponseStatus } from "src/financial-payment/strategies/strategy-response-status.enum";
 import { FinancialTransactionDocument } from "../models";
 import { UtilStrategyFunc } from "src/financial-payment/strategies/util-strategy-func";
+import { ERROR_CODE } from "src/shared/config/errors";
 
 @Injectable()
 export class PaymentService
@@ -40,9 +41,8 @@ export class PaymentService
         catch(err)
         {
             await transaction.abortTransaction();
-            // throw err
             console.log("Error Payement Pay",err)
-
+            throw err
         }
         finally
         {
@@ -51,6 +51,7 @@ export class PaymentService
         return  financialTransaction;
     }
 
+
     async checkPayment(financialTransactionRef)
     {
         let transaction = await this.connection.startSession(),financialTransaction:FinancialTransactionDocument=null;
@@ -58,7 +59,7 @@ export class PaymentService
         try {
             financialTransaction=await this.financialTransactionService.findOneByField({ref:financialTransactionRef})
             if(!financialTransaction) throw new NotFoundException({
-                status:HttpStatus.NOT_FOUND,
+                statusCode:HttpStatus.NOT_FOUND,
                 message:`Transaction id ${financialTransactionRef} not found`
             });
             if(financialTransaction.state==FinancialTransactionState.FINANCIAL_TRANSACTION_ERROR || financialTransaction.state==FinancialTransactionState.FINANCIAL_TRANSACTION_SUCCESS)
@@ -77,7 +78,18 @@ export class PaymentService
         {
             await transaction.abortTransaction();
             console.log("Error Payement Check Status",err)
+            switch(err)
+            {
+                case ERROR_CODE.RESSOURCE_NOT_FOUND_ERROR:
+                    throw new NotFoundException({
+                        statusCode:HttpStatus.NOT_FOUND,
+                        message:`Transaction id ${financialTransactionRef} not found`
+                    });
+                    break;
+                case ERROR_CODE.UNKNOW_ERROR:
+                    return financialTransaction;
 
+            }
             // throw err
         }
         finally
@@ -115,6 +127,9 @@ export class PaymentService
         {
             await transaction.abortTransaction();
             console.log("Error Payement Update Status",err)
+
+            throw err
+
         }
         finally
         {
