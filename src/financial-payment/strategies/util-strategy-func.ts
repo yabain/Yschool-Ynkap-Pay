@@ -6,7 +6,7 @@ export class UtilStrategyFunc
     static getResponseStatus(response):Record<string,any>
     {
         let r = {endDate:new Date().toISOString()};
-        switch(response.status)
+        switch(response.data.status)
         {
             case StrategyResponseStatus.SUCCESSFUL: 
                 r["status"] = FinancialTransactionState.FINANCIAL_TRANSACTION_SUCCESS
@@ -21,7 +21,7 @@ export class UtilStrategyFunc
                         break;
 
                     case StrategyResponseStatus.PAYEE_NOT_FOUND:
-                        r["status"] = FinancialTransactionState.FINANCIAL_TRANSACTION_SUCCESS
+                        r["status"] = FinancialTransactionState.FINANCIAL_TRANSACTION_ERROR
                         r["error"] = FinancialTransactionErrorType.RECEIVER_NOT_FOUND_ERROR
                         break;
                     default:
@@ -30,9 +30,11 @@ export class UtilStrategyFunc
                 }
                 break;
             case StrategyResponseStatus.PENDING:
-            default:
                 r["status"] = FinancialTransactionState.FINANCIAL_TRANSACTION_PENDING
                 r["error"] = FinancialTransactionErrorType.NO_ERROR
+            case StrategyResponseStatus.EXPIRED:
+                r["status"] = FinancialTransactionState.FINANCIAL_TRANSACTION_ERROR
+                r["error"] = FinancialTransactionErrorType.TIMEOUT_PAYMENT
         }
         return r;
     }

@@ -48,6 +48,9 @@ export class FinancialTransaction extends Document
     @Prop({required:true,default:UtilsFunc.generateUniqueRef()})
     ref:string;
 
+    @Prop({default:""})
+    token:string;
+
     @Prop({required:true,enum:FinancialTransactionErrorType,default:FinancialTransactionErrorType.NO_ERROR})
     error:FinancialTransactionErrorType;
 

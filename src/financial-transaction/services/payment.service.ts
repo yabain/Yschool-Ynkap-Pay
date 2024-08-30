@@ -57,7 +57,7 @@ export class PaymentService
         let transaction = await this.connection.startSession(),financialTransaction:FinancialTransactionDocument=null;
         transaction.startTransaction();
         try {
-            financialTransaction=await this.financialTransactionService.findOneByField({ref:financialTransactionRef})
+            financialTransaction=await this.financialTransactionService.findOneByField({token:financialTransactionRef})
             console.log("financialTransaction", financialTransaction)
             if(!financialTransaction) throw new NotFoundException({
                 statusCode:HttpStatus.NOT_FOUND,
@@ -109,7 +109,8 @@ export class PaymentService
         let transaction = await this.connection.startSession(),financialTransaction=null;
         transaction.startTransaction();
         try {
-            financialTransaction=await this.financialTransactionService.findOneByField({payToken})
+            financialTransaction=await this.financialTransactionService.findOneByField({token:payToken})
+            console.log("Direct Update payement",payToken,financialTransaction)
             if(!financialTransaction) throw new NotFoundException({
                 status:HttpStatus.NOT_FOUND,
                 message:`Transaction PayToken ${payToken} not found`

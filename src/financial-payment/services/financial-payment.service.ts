@@ -18,12 +18,14 @@ export class FinancialPaymentService
                                 :this.paymentBuilder.getMethodPayment(financialTransaction.paymentMode ).withdrawal(financialTransaction);
 
             paymentMethod.then((result)=>{
-                financialTransaction.state=result.error==FinancialTransactionErrorType.NO_ERROR?FinancialTransactionState.FINANCIAL_TRANSACTION_PENDING:FinancialTransactionState.FINANCIAL_TRANSACTION_ERROR;
-                financialTransaction.startDate=new Date().toISOString();
-                financialTransaction.endDate=new Date().toISOString();
-                financialTransaction.error=result.error;
                 // if(result.token) financialTransaction.token=result.token
-                resolve(financialTransaction)
+                resolve({
+                    state:result.error==FinancialTransactionErrorType.NO_ERROR?FinancialTransactionState.FINANCIAL_TRANSACTION_PENDING:FinancialTransactionState.FINANCIAL_TRANSACTION_ERROR,
+                    startDate:new Date().toISOString(),
+                    endDate:new Date().toISOString(),
+                    error:result.error,
+                    token:result.token
+                })
             })
             .catch((error)=> {
                 console.log("Error ",error.response.data)
@@ -45,6 +47,7 @@ export class FinancialPaymentService
                     error:result.error,
                     endDate:result.endDate
                 };
+                console.log("Resultat ", r)
                 resolve(r)
             })
             .catch((error)=>reject(error))

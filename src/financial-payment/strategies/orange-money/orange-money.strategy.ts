@@ -80,7 +80,7 @@ export class OrangeMoneyStrategyPayment implements PaymentMethodStrategy
                     )
                 .subscribe(
                     (data)=>{
-                        console.log("data ",data)
+                        console.log("data ",data.data)
                         resolve({ error:FinancialTransactionErrorType.NO_ERROR,token:mPayToken })
                     },
                     (error)=>{
@@ -112,14 +112,14 @@ export class OrangeMoneyStrategyPayment implements PaymentMethodStrategy
             .then((result)=>{
                 token = result;
                 return this.httpService.axiosRef.request({
-                    url:`${this.configService.get<string>("OM_API_PATH")}/omcoreapis/1.0.2/mp/paymentstatus/${financialTransaction.ref}`,
+                    url:`${this.configService.get<string>("OM_API_PATH")}/omcoreapis/1.0.2/mp/paymentstatus/${financialTransaction.token}`,
                     method:"get",
                     headers:{
                         Authorization: `Bearer ${token}`,
                         "X-AUTH-TOKEN": this.configService.get("OM_API_X_AUTH_TOKEN"),
                 }})})
             .then((response)=>{
-                console.log("Response ",response)
+                console.log("Response Check",response.data)
                 resolve({...UtilStrategyFunc.getResponseStatus(response.data) })
             }).catch( (error)=>
                 {
