@@ -30,13 +30,15 @@ export class PaymentService
         transaction.startTransaction();
         let financialTransaction:FinancialTransactionDocument=null;
         try {    
-            financialTransaction=await this.financialTransactionService.create(createFinancialTransactionDTO,transaction);
+            financialTransaction=await this.financialTransactionService.createNewFinancialTransaction(createFinancialTransactionDTO,transaction);
+           console.log("financialTransaction1", financialTransaction)
             financialTransaction= await this.financialTransactionService.update(
                 {_id:financialTransaction._id},
                 await this.paymentService.makePaiement(financialTransaction),
                 transaction
             );
             await transaction.commitTransaction();
+            console.log("financialTransaction", financialTransaction)
         } 
         catch(err)
         {

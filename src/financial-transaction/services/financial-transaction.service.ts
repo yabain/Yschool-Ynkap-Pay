@@ -6,44 +6,27 @@ import { WalletService } from "src/wallet/services";
 import { CreateFinancialTransactionDTO } from "../dtos";
 import { FinancialTransaction, FinancialTransactionDocument } from "../models";
 import { ConfigService } from "@nestjs/config";
+import { DataBaseService } from "src/shared/database";
 
 @Injectable()
-export class FinancialTransactionService
+export class FinancialTransactionService extends DataBaseService<FinancialTransactionDocument>
 {
     constructor(
-        @InjectModel(FinancialTransaction.name) private financialTransactionModel:Model<FinancialTransactionDocument>,
-        @InjectConnection() private readonly connection:mongoose.Connection,
+        @InjectModel(FinancialTransaction.name)  financialTransactionModel:Model<FinancialTransactionDocument>,
+        @InjectConnection() connection:mongoose.Connection,
         private applicationService:ApplicationService,
         private walletService:WalletService,
         private configService:ConfigService
-    ){}
+    ){
+        super(financialTransactionModel,connection,[])
+    }
 
-    async create(createFinancialTransactionDTO:CreateFinancialTransactionDTO,session)
+    async createNewFinancialTransaction(createFinancialTransactionDTO:CreateFinancialTransactionDTO,session)
     {
         createFinancialTransactionDTO.application= await this.applicationService.findOneByField({name:this.configService.get("DEFAULT_YSCHOOL_APPLICATION_NAME")})
         createFinancialTransactionDTO.wallet=await this.walletService.findOneByField({application:createFinancialTransactionDTO.application.id});
 
-        return new this.financialTransactionModel(createFinancialTransactionDTO).save({session})     
+        return this.create(createFinancialTransactionDTO,session)     
     }
 
-    async findAll(): Promise<FinancialTransactionDocument[]>
-    {
-        return this.financialTransactionModel.find().exec();
-    }
-
- 
-    async findByField(userObj:Record<string,any>):Promise<FinancialTransactionDocument[]>
-    {
-        return this.financialTransactionModel.find<FinancialTransactionDocument>(userObj).exec()
-    }
-
-    async findOneByField(userObj:Record<string,any>):Promise<FinancialTransactionDocument>
-    {
-        return this.financialTransactionModel.findOne<FinancialTransactionDocument>(userObj).exec()
-    }
-
-    async update(filter:Record<string,any>,toUpdate:Record<string,any>,session=null)
-    {
-        return this.financialTransactionModel.findOneAndUpdate(filter,toUpdate,{session,new:true});
-    }
 }

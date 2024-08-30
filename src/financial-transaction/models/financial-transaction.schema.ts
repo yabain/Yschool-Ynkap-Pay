@@ -13,13 +13,11 @@ export type FinancialTransactionDocument =  HydratedDocument<FinancialTransactio
 @Schema({
     toObject: {
         transform: function (doc, ret) {
-          delete ret.token;
           delete ret.__v;
         }
       },
       toJSON: {
         transform: function (doc, ret) {
-          delete ret.token;
           delete ret.__v;
 
         }
