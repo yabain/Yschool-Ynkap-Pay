@@ -23,8 +23,10 @@ export class PaymentController
     }
 
     @Post("orange-money-notify-payment")    
-    async orangeMoneyNotifyPayment(@Req() request:Request, @Body() orangeMoneyUpdateFinancialTransactionStatus:OrangeMoneyUpdateFinancialTransactionStatus)
+    async orangeMoneyNotifyPayment(@Req() request:Request, @Body() orangeMoneyUpdateFinancialTransactionStatus)
     {
+        //OrangeMoneyUpdateFinancialTransactionStatus
+        console.log("orangeMoneyUpdateFinancialTransactionStatus ", orangeMoneyUpdateFinancialTransactionStatus)
         let data=await this.paymentService.updatePayementStatus(orangeMoneyUpdateFinancialTransactionStatus.payToken,orangeMoneyUpdateFinancialTransactionStatus.status)
         return {
             statusCode:HttpStatus.CREATED,
