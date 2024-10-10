@@ -123,7 +123,7 @@ export class PaymentService
             financialTransaction= await this.financialTransactionService.update(
                 {_id:financialTransaction._id},
                 {
-                    ...UtilStrategyFunc.getResponseStatus({status})
+                    ...UtilStrategyFunc.getResponseStatus({data:{status}})
                 },
                 transaction
             );

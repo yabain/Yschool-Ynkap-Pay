@@ -1,3 +1,4 @@
+
 export enum StrategyResponseStatus
 {
     SUCCESSFUL="SUCCESSFULL",
@@ -5,6 +6,6 @@ export enum StrategyResponseStatus
     PAYER_NOT_FOUND="PAYER_NOT_FOUND",
     PAYEE_NOT_FOUND="PAYEE_NOT_FOUND",
     PENDING="PENDING",
-    EXPIRED="EXPIRED"
-
+    EXPIRED="EXPIRED",
+    CANCELLED="CANCELLED"
 }

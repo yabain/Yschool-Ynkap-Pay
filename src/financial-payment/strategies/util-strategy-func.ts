@@ -35,6 +35,9 @@ export class UtilStrategyFunc
             case StrategyResponseStatus.EXPIRED:
                 r["status"] = FinancialTransactionState.FINANCIAL_TRANSACTION_ERROR
                 r["error"] = FinancialTransactionErrorType.TIMEOUT_PAYMENT
+            case StrategyResponseStatus.CANCELLED:
+                r["status"] = FinancialTransactionState.FINANCIAL_TRANSACTION_ERROR
+                r["error"] = FinancialTransactionErrorType.BUYER_CANCEL_PAYMENT
         }
         return r;
     }
