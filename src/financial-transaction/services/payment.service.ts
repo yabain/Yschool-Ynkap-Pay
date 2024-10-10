@@ -112,7 +112,7 @@ export class PaymentService
         transaction.startTransaction();
         try {
             financialTransaction=await this.financialTransactionService.findOneByField({token:payToken})
-            console.log("Direct Update payement",payToken,financialTransaction)
+            console.log("Direct Update payement",payToken,status,financialTransaction)
             if(!financialTransaction) throw new NotFoundException({
                 status:HttpStatus.NOT_FOUND,
                 message:`Transaction PayToken ${payToken} not found`
