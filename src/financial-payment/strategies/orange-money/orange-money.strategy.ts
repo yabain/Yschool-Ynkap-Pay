@@ -80,7 +80,7 @@ export class OrangeMoneyStrategyPayment implements PaymentMethodStrategy
                     )
                 .subscribe(
                     (data)=>{
-                        console.log("data ",data.data)
+                        // console.log("data ",data.data)
                         resolve({ error:FinancialTransactionErrorType.NO_ERROR,token:mPayToken })
                     },
                     (error)=>{
@@ -119,7 +119,7 @@ export class OrangeMoneyStrategyPayment implements PaymentMethodStrategy
                         "X-AUTH-TOKEN": this.configService.get("OM_API_X_AUTH_TOKEN"),
                 }})})
             .then((response)=>{
-                console.log("Response Check",response.data)
+                // console.log("Response Check",response.data)
                 resolve({...UtilStrategyFunc.getResponseStatus(response.data) })
             }).catch( (error)=>
                 {

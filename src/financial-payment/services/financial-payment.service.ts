@@ -18,6 +18,7 @@ export class FinancialPaymentService
                                 :this.paymentBuilder.getMethodPayment(financialTransaction.paymentMode ).withdrawal(financialTransaction);
 
             paymentMethod.then((result)=>{
+                console.log("Resultat ", result)
                 // if(result.token) financialTransaction.token=result.token
                 resolve({
                     state:result.error==FinancialTransactionErrorType.NO_ERROR?FinancialTransactionState.FINANCIAL_TRANSACTION_PENDING:FinancialTransactionState.FINANCIAL_TRANSACTION_ERROR,

@@ -31,14 +31,14 @@ export class PaymentService
         let financialTransaction:FinancialTransactionDocument=null;
         try {    
             financialTransaction=await this.financialTransactionService.createNewFinancialTransaction(createFinancialTransactionDTO,transaction);
-           console.log("financialTransaction1", financialTransaction)
+        //    console.log("financialTransaction1", financialTransaction)
             financialTransaction= await this.financialTransactionService.update(
                 {_id:financialTransaction._id},
                 await this.paymentService.makePaiement(financialTransaction),
                 transaction
             );
             await transaction.commitTransaction();
-            console.log("financialTransaction", financialTransaction)
+            // console.log("financialTransaction", financialTransaction)
         } 
         catch(err)
         {
@@ -60,7 +60,7 @@ export class PaymentService
         transaction.startTransaction();
         try {
             financialTransaction=await this.financialTransactionService.findOneByField({token:financialTransactionRef})
-            console.log("financialTransaction", financialTransaction)
+            // console.log("financialTransaction", financialTransaction)
             if(!financialTransaction) throw new NotFoundException({
                 statusCode:HttpStatus.NOT_FOUND,
                 message:`Transaction id ${financialTransactionRef} not found`
@@ -112,7 +112,7 @@ export class PaymentService
         transaction.startTransaction();
         try {
             financialTransaction=await this.financialTransactionService.findOneByField({token:payToken})
-            console.log("Direct Update payement",payToken,status,financialTransaction)
+            // console.log("Direct Update payement",payToken,status,financialTransaction)
             if(!financialTransaction) throw new NotFoundException({
                 status:HttpStatus.NOT_FOUND,
                 message:`Transaction PayToken ${payToken} not found`

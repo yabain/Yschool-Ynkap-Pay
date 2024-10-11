@@ -32,12 +32,15 @@ export class UtilStrategyFunc
             case StrategyResponseStatus.PENDING:
                 r["status"] = FinancialTransactionState.FINANCIAL_TRANSACTION_PENDING
                 r["error"] = FinancialTransactionErrorType.NO_ERROR
+                break;
             case StrategyResponseStatus.EXPIRED:
                 r["status"] = FinancialTransactionState.FINANCIAL_TRANSACTION_ERROR
                 r["error"] = FinancialTransactionErrorType.TIMEOUT_PAYMENT
+                break;
             case StrategyResponseStatus.CANCELLED:
                 r["status"] = FinancialTransactionState.FINANCIAL_TRANSACTION_ERROR
                 r["error"] = FinancialTransactionErrorType.BUYER_CANCEL_PAYMENT
+                break;
         }
         return r;
     }
